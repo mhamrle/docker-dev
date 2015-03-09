@@ -1,8 +1,9 @@
 #Docker development environment#
 
-This document describes how to create an development environment
+This document describes how to create a development environment
 inside a docker container with your `$HOME` folder mounted as the
-`$HOME` folder inside the docker container.
+`$HOME` folder inside the docker container. The benefit is that all
+your dotfiles will be there.
 
 ##Usage##
 
@@ -10,7 +11,7 @@ inside a docker container with your `$HOME` folder mounted as the
 2. edit the `Dockerfile`
   * for non-`bash` users: find out how to wrap your shell's init file
     and make sure that the $GOPATH is indeed `/opt/go/`.
-1. create image with `docker build -t $SOME_TAGNAME .`
+1. create an image with `docker build -t $SOME_TAGNAME .`
 1. log into development environment with
 
     ```bash
