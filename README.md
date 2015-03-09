@@ -14,19 +14,14 @@ inside a docker container with your `$HOME` folder mounted as the
 1. log into development environment with
 
     ```bash
-        docker run -it -e TERM=$TERM -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/root $SOME_TAGNAME
+        docker run -it -e TERM=$TERM -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
     ```
   * users that need X will do
 
     ```bash
-        docker run -it -e TERM=$TERM -e DISPLAY=$DISPLAY -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/root $SOME_TAGNAME
+        docker run -it -e TERM=$TERM -e DISPLAY=$DISPLAY -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
     ```
 1. create an alias for the `docker run` command that suits your needs
 1. commit changes and push to your fork on GitHub
   * this is useful to inspire other developers with your setup
   * and it's a free backup of your environment
-
-##Note##
-
-The user inside the docker container is `root`. This can easily be changed
-by editing the `Dockerfile` if you prefer to work as an unprivileged user.
