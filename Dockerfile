@@ -7,6 +7,8 @@ RUN apt-get update && \
     apt-get autoremove
 ENV GOPATH_MOUNTED /opt/go_mounted
 CMD service ssh start && \
+    sh /opt/run_services.sh && \
+    locale-gen de_CH.UTF-8 && \
     mkdir $HOME/.ssh && \
     cp /home/dev/.ssh/id_rsa.pub $HOME/.ssh/authorized_keys && \
     uid=$(ls -ldn $GOPATH_MOUNTED/src/github.com/monetas/ | awk '{print $3}') && \
