@@ -15,5 +15,5 @@ CMD service ssh start && \
     useradd -d /home/dev -M -u $uid -s /bin/bash dev && \
     install /home/dev/.bashrc /opt/bashrc && \
     echo "export GOPATH=$GOPATH_MOUNTED:$GOPATH GOROOT=$GOROOT PATH=$PATH PS1='\[\033[00m\]\[\033[01;34m\]\w \[\033[01;31m\]DOCKER\[\033[00m\] '" >> /opt/bashrc && \
-    echo "cd $GOPATH_MOUNTED/src/github.com/monetas/notary" >> /opt/bashrc && \
+    echo "cd $GOPATH_MOUNTED/src/github.com/monetas/gotary" >> /opt/bashrc && \
     sudo -i -u dev bash --rcfile /opt/bashrc
