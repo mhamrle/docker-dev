@@ -19,12 +19,12 @@ correct dependencies.
 1. log into build and test environment with
 
     ```bash
-        docker run -it -p 2222:22 -e TERM=$TERM -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
+        docker run -it -p 2222:22 -e TERM=$TERM -v $GOPATH/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
     ```
   * users that need X will do
 
     ```bash
-        docker run -it -p 2222:22 -e TERM=$TERM -e DISPLAY=$DISPLAY -v $GOPATH/src/github.com/monetas:/opt/go/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
+        docker run -it -p 2222:22 -e TERM=$TERM -e DISPLAY=$DISPLAY -v $GOPATH/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas -v $HOME:/home/dev $SOME_TAGNAME
     ```
 1. mount dependecies and include them into your `$GOPATH`
 ```bash
