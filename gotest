@@ -1,0 +1,5 @@
+#!/bin/sh
+# TODO: test it
+# docker run -it -p 2222:22  -v /home/martin/git/go/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas -v $HOME:/home/dev    gotary-dev
+
+ssh -p 2222 root@localhost "export GOPATH=/opt/go_mounted:/opt/go GOROOT=/opt/go_dist/go PATH=/opt/go_dist/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; cd /opt/go_mounted/src/github.com/monetas/gotary;go test $*"
