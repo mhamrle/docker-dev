@@ -8,6 +8,7 @@ RUN apt-get update && \
 ENV GOPATH_MOUNTED /opt/go_mounted
 CMD service ssh start && \
     sh /opt/run_services.sh && \
+    cd $GOPATH_MOUNTED/src/github.com/monetas/gotary/Dockerfiles/ && sh install.sh && \
     locale-gen de_CH.UTF-8 && \
     mkdir $HOME/.ssh && \
     cp /home/dev/.ssh/id_rsa.pub $HOME/.ssh/authorized_keys && \
