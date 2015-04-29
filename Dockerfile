@@ -4,7 +4,8 @@ MAINTAINER Filip Gospodinov "filip@monetas.net"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openssh-server git tig && \
-    apt-get autoremove
+    apt-get autoremove && \
+    go get -u github.com/davecgh/go-spew/spew
 ENV GOPATH_MOUNTED /opt/go_mounted
 CMD service ssh start && \
     sh /opt/run_services.sh && \
