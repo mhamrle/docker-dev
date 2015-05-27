@@ -16,6 +16,8 @@ CMD service ssh start && \
     uid=$(ls -ldn $GOPATH_MOUNTED/src/github.com/monetas/ | awk '{print $3}') && \
     useradd -d /home/dev -M -u $uid -s /bin/bash dev && \
     install /home/dev/.bashrc /opt/bashrc && \
+    chown dev:dev $GOPATH_MOUNTED && \
+    chown -R dev:dev $GOPATH && \
     echo "export GOPATH=$GOPATH_MOUNTED:$GOPATH GOROOT=$GOROOT PATH=$PATH PS1='\[\033[00m\]\[\033[01;34m\]\w \[\033[01;31m\]DOCKER\[\033[00m\] '" >> /opt/bashrc && \
     echo "cd $GOPATH_MOUNTED/src/github.com/monetas/gotary" >> /opt/bashrc && \
     sudo -i -u dev bash --rcfile /opt/bashrc
