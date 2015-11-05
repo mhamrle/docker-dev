@@ -1,11 +1,35 @@
 #!/bin/sh
-# TODO: test it
-# docker run -it -p 2222:22  -v /home/martin/git/go/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas -v $HOME:/home/dev    gotary-dev
+CONTAINERID=gotary-test
 
-if ! docker ps | grep -q gotary-dev:lates ; then
+
+case $1 in 
+        ("kill")
+                docker kill $CONTAINERID
+                docker rm $CONTAINERID
+                exit
+                ;;
+esac
+
+if ! docker ps | grep -q notary-dev; then
         echo "no running docker found, running new one"
-        docker run  -p 2222:22 -d -ti -v /home/martin/git/go/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas -v $HOME:/home/dev    gotary-dev
+        docker run  -p 2222:22 -d -ti \
+        -v /home/martin/git/go/src/github.com/monetas:/opt/go_mounted/src/github.com/monetas \
+        -v $HOME:/home/dev \
+        --name $CONTAINERID  \
+        notary-dev bash -c "sudo sh /opt/run_services.sh; cd $GOPATH/src/github.com/monetas/gotary/scripts/database && sh install.sh  ; sleep 3600"
         sleep 3
 fi
 
-ssh -p 2222 root@localhost "export GOPATH=/opt/go_mounted:/opt/go GOROOT=/opt/go_dist/go PATH=/opt/go_dist/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; cd /opt/go_mounted/src/github.com/monetas/gotary;go test $*"
+CMD="go test $@"
+case $1 in 
+        ("bash")
+                CMD=bash
+                ;;
+        ("test")
+                CMD="make tests"
+                ;;
+        ("db")
+                CMD=bash
+                ;;
+esac
+docker exec -ti $CONTAINERID bash -c  "export GOPATH=/opt/go_mounted:/opt/go:/tmp/go_errcheck/ GOROOT=/opt/go_dist/go PATH=/opt/go_dist/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/go/bin; cd /opt/go_mounted/src/github.com/monetas/gotary; $CMD"
