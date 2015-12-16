@@ -15,13 +15,14 @@ case $OPT in
         ;;
 esac
 
-if ! docker ps | grep -q notary-dev; then
+if ! docker ps | grep -q $CONTAINERID; then
         echo "no running docker found, running new one"
-        docker run  -p 2222:22 -d -ti \
+        docker run  -p 5432:5432 -p 5150:5150 -d -ti \
         -v /home/martin/git/go/src/github.com/monetas:/opt/go/src/github.com/monetas \
         -v $HOME:/home/dev \
         --name $CONTAINERID  \
-        notary-dev bash -c "sudo sh /opt/run_services.sh; cd $GOPATH/src/github.com/monetas/gotary/scripts/database && sh install.sh  ; sleep 3600"
+        notary-dev bash -c "service supervisor start;sudo sh /opt/run_services.sh; cd
+        $GOPATH/src/github.com/monetas/gotary/scripts/database && sh install.sh ; sleep 30000"
         sleep 3
 fi
 
@@ -36,5 +37,20 @@ case $OPT in
         ("db")
                 CMD="make docker-dbcreate"
                 ;;
+        ("all")
+                CMD="GOGC=off go install \$(scripts/our_packages.sh); GOGC=off go test \$(scripts/our_packages.sh)"
+                ;;
+        ("oldall")
+                CMD="go test \$(scripts/our_packages.sh)"
+                ;;
+        ("vall")
+                CMD="GOGC=off go install \$(scripts/our_packages.sh); GOGC=off go test -v \$(scripts/our_packages.sh)"
+                ;;
+        ("fall")
+                CMD="GOGC=off go install \$(scripts/our_packages.sh); GOGC=off go test \$(scripts/our_packages.sh | grep $@ )"
+                ;;
+
 esac
-docker exec -ti $CONTAINERID bash -c  "cd /opt/go/src/github.com/monetas/gotary; $CMD"
+#TODO add GOGC=off , better by 10s
+# add go install
+docker exec -ti $CONTAINERID bash -xc  "cd /opt/go/src/github.com/monetas/gotary; $CMD"
