@@ -21,8 +21,16 @@ if ! docker ps | grep -q $CONTAINERID; then
         -v /home/martin/git/go/src/github.com/monetas:/opt/go/src/github.com/monetas \
         -v $HOME:/home/dev \
         --name $CONTAINERID  \
-        notary-dev bash -c "service supervisor start;sudo sh /opt/run_services.sh; cd
-        $GOPATH/src/github.com/monetas/gotary/scripts/database && sh install.sh ; sleep 30000"
+        notary-dev bash -c "\
+            rm /etc/supervisor/conf.d/f* \
+                /etc/supervisor/conf.d/gcm* \
+                /etc/supervisor/conf.d/msg* \
+                /etc/supervisor/conf.d/not* ;
+            service supervisor start;\
+            sudo sh /opt/run_services.sh;\
+            cd $GOPATH/src/github.com/monetas/gotary/scripts/database &&\
+            sh install.sh ;\
+            sleep 30000"
         sleep 3
 fi
 
@@ -45,8 +53,7 @@ case $OPT in
                 ;;
         ("vall")
                 CMD="GOGC=off go install \$(scripts/our_packages.sh); GOGC=off go test -v \$(scripts/our_packages.sh)"
-                ;;
-        ("fall")
+                ;; ("fall")
                 CMD="GOGC=off go install \$(scripts/our_packages.sh); GOGC=off go test \$(scripts/our_packages.sh | grep $@ )"
                 ;;
 
